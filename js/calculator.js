@@ -7,22 +7,21 @@ var calculator = (function () {
     //     y: parseFloat(document.getElementById("secondNumber").value)
     // };
 
-    function removeWarningNaNifExist(){
+    function removeWarningIfExist(){
         if(document.getElementById("alertWarning")){
             var alertWarning = document.getElementById("alertWarning");
             document.getElementById("alertNotNumber").removeChild(alertWarning);
         }
     };
 
-    function numberIsFloat(number) {
-        var numberIsFloat = false;
-        if(!(number % 1 === 0)){
-            if(!document.getElementById("alertWarning")) {
-                setWarning("Warning! Number must be integer!");
-            }
-            numberIsFloat = true;
+    function numberIsFloatOrNegative(number) {
+        var numberIsFloatAndPositive = false;
+        if(!(number % 1 === 0) || (number < 0)){
+            removeWarningIfExist();
+            setWarning("Warning! Number must be positive integer!");
+            numberIsFloatAndPositive = true;
         }
-        return numberIsFloat;
+        return numberIsFloatAndPositive;
     };
 
     function setWarning(warningMessage){
@@ -40,7 +39,7 @@ var calculator = (function () {
             var firstNumber = parseFloat(document.getElementById("firstNumber").value),
                 secondNumber = parseFloat(document.getElementById("secondNumber").value);
             if(numberIsNotNaN(firstNumber) && numberIsNotNaN(secondNumber)) {
-                removeWarningNaNifExist();
+                removeWarningIfExist();
                 document.getElementById("result").innerHTML = firstNumber + secondNumber;
             }
         },
@@ -48,7 +47,7 @@ var calculator = (function () {
             var firstNumber = parseFloat(document.getElementById("firstNumber").value),
                 secondNumber = parseFloat(document.getElementById("secondNumber").value);
             if(numberIsNotNaN(firstNumber) && numberIsNotNaN(secondNumber)) {
-                removeWarningNaNifExist();
+                removeWarningIfExist();
                 document.getElementById("result").innerHTML = firstNumber - secondNumber;
             }
         },
@@ -56,7 +55,7 @@ var calculator = (function () {
             var firstNumber = parseFloat(document.getElementById("firstNumber").value),
                 secondNumber = parseFloat(document.getElementById("secondNumber").value);
             if(numberIsNotNaN(firstNumber) && numberIsNotNaN(secondNumber)) {
-                removeWarningNaNifExist();
+                removeWarningIfExist();
                 document.getElementById("result").innerHTML = firstNumber * secondNumber;
             }
         },
@@ -64,14 +63,14 @@ var calculator = (function () {
             var firstNumber = parseFloat(document.getElementById("firstNumber").value),
                 secondNumber = parseFloat(document.getElementById("secondNumber").value);
             if(numberIsNotNaN(firstNumber) && numberIsNotNaN(secondNumber)) {
-                removeWarningNaNifExist();
+                removeWarningIfExist();
                 document.getElementById("result").innerHTML = firstNumber / secondNumber;
             }
         },
         factorial1: function() {
             var firstNumber = parseFloat(document.getElementById("firstNumber").value);
-            if(!numberIsFloat(firstNumber)) {
-                removeWarningNaNifExist();
+            if(!numberIsFloatOrNegative(firstNumber)) {
+                removeWarningIfExist();
                 var result = 1;
                 for(var i = firstNumber; i > 1; i--){
                     result = result * i;
@@ -81,8 +80,8 @@ var calculator = (function () {
         },
         factorial2: function() {
             var secondNumber = parseFloat(document.getElementById("secondNumber").value);
-            if(!numberIsFloat(secondNumber)) {
-                removeWarningNaNifExist();
+            if(!numberIsFloatOrNegative(secondNumber)) {
+                removeWarningIfExist();
                 var result = 1;
                 for(var i = secondNumber; i > 1; i--){
                     result = result * i;
@@ -94,10 +93,9 @@ var calculator = (function () {
     function numberIsNotNaN(number){
         var numberIsNaN = true;
         if (isNaN(number)) {
-            if(!document.getElementById("alertWarning")) {
-                setWarning("Warning! Numbers must be correctly!")
-            }
-             numberIsNaN = false;
+            removeWarningIfExist();
+            setWarning("Warning! Numbers must be correctly!");
+            numberIsNaN = false;
         }
         return  numberIsNaN;
     };
